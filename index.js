@@ -9,7 +9,7 @@ const dbConfig=require("./configs/db.config")
 const userModel=require("./models/user.model")
 const bcrypt=require("bcryptjs")
 
-app.use(express.json())
+app.use(express.json()) //converts json object in request body in js object
 
 /**
  * connecction with mongoose
