@@ -1,0 +1,63 @@
+/**
+ * This is the entry point for our application
+ */
+const express=require("express")
+const app=express()
+const mongoose=require("mongoose")
+const serverConfig = require("./configs/server.config")
+const dbConfig=require("./configs/db.config")
+const userModel=require("./models/user.model")
+const bcrypt=require("bcryptjs")
+
+/**
+ * connecction with mongoose
+ */
+mongoose.connect(dbConfig.DB_URL)
+const db=mongoose.connection
+db.on("err",()=>{
+    console.log("Error in connecting with the database")
+})
+db.once("open",()=>{
+    console.log("Connected successfully with the databse");
+    init()
+})
+
+
+/**
+ * check if admin is present
+ */
+async function init(){
+    try{
+        let user=await userModel.findOne({userType:"ADMIN"})
+        if(user){
+            console.log("Admin is already present")
+            return
+        }
+    }catch(err){
+        console.log("Error while reading data",err)
+    }
+
+    try{
+        user=await userModel.create({
+            name:"Nabajit",
+            userID:"Admin01",
+            password:bcrypt.hashSync("Welcome1",8),
+            Email:"dasnabajit2005@gmail.com",
+            userType:"ADMIN"
+        })
+        console.log("Admin Created Successfully",user)
+
+    }catch(err){
+        console.log("Error while creating Admin",err);
+    }
+    
+
+}
+
+
+/**
+ * Starting the server
+ */
+app.listen(serverConfig.PORT,()=>{
+    console.log("Connected Successfully to the port number : ",serverConfig.PORT)
+})
