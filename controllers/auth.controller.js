@@ -14,11 +14,11 @@ exports.signUp=async (req,res)=>{
 
     //Adding data in MongoDB
     const userObj={
-        name:request_body.body.name,
-        userID:request_body.body.userID,
-        Email:request_body.body.Email,
-        userType:request_body.body.userType,
-        password:bcrypt.hashSync(request_body.body.password,8)
+        name:request_body.name,
+        userID:request_body.userID,
+        Email:request_body.Email,
+        userType:request_body.userType,
+        password:bcrypt.hashSync(request_body.password,8)
     }
     try{
         const user_created=await userModel.create(userObj)

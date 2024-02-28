@@ -9,6 +9,8 @@ const dbConfig=require("./configs/db.config")
 const userModel=require("./models/user.model")
 const bcrypt=require("bcryptjs")
 
+app.use(express.json())
+
 /**
  * connecction with mongoose
  */
@@ -54,6 +56,11 @@ async function init(){
 
 }
 
+/**
+ * stitching the routes
+ */
+
+require("./routes/auth.routes")(app)
 
 /**
  * Starting the server
