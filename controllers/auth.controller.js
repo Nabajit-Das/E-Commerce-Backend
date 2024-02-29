@@ -3,6 +3,8 @@
  */
 const userModel=require("../models/user.model")
 const bcrypt=require("bcryptjs")
+const jwt=require("jsonwebtoken")
+const secret=require("../configs/auth.config")
 
 exports.signUp=async (req,res)=>{
     /**
@@ -40,4 +42,40 @@ exports.signUp=async (req,res)=>{
             message:"Some Error in signing up"
         })
     }
+}
+
+exports.signIn= async (req,res)=>{
+    /**
+     * Logic to Sign In user
+     */
+
+    // 1. Check if user ID already presenr or not
+    const user=await userModel.findOne({userID:req.body.userID});
+    if(user==null){
+        return res.status(400).send({
+            message: "User ID not present"
+        })
+    }
+
+    // 2. Check for password Validation
+    const isPasswordValid=bcrypt.compareSync(req.body.password,user.password);
+
+    if(!isPasswordValid){
+        return res.status(401).send({
+            message: "Wrong Password"
+        })
+    }
+
+    // 3. Return JWT on successful authentication
+    const token=jwt.sign({id:user.userID},secret.secret,{
+        expiresIn: 120
+    })
+
+    res.status(200).send({
+        name: user.name,
+        userID: user.userID,
+        Email:user.Email,
+        userType: user.userType,
+        token: token
+    })
 }

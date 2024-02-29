@@ -42,6 +42,31 @@ const verifySignUpBody=async (req,res,next)=>{
     }
 }
 
+const verifySignInBody=async (req,res,next)=>{
+    // check if all information is provided or not
+    try{
+        if(!req.body.userID){
+            return res.status(400).send({
+                message: "UserId not provided"
+            })
+        }
+
+        if(!req.body.password){
+            return res.status(400).send({
+                message: "Password is not provided"
+            })
+        }
+
+        next()
+    }catch(err){
+        console.log("Error in validating signIn data ", err)
+        res.status(500).send({
+            message: "Error while validating data"
+        })
+    }
+}
+
 module.exports={
-    verifySignUpBody: verifySignUpBody
+    verifySignUpBody: verifySignUpBody,
+    verifySignInBody: verifySignInBody
 }
