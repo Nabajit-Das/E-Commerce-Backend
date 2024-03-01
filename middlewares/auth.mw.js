@@ -2,7 +2,8 @@
  * checks for all the field in the request body
  */
 const userModel=require("../models/user.model")
-const authController=require("../controllers/auth.controller")
+const jwt=require("jsonwebtoken")
+const authConfig=require("../configs/auth.config")
 
 const verifySignUpBody=async (req,res,next)=>{
     try{
@@ -66,7 +67,45 @@ const verifySignInBody=async (req,res,next)=>{
     }
 }
 
+const verifyToken=async(req,res,next)=>{
+    const token=req.headers["x-acess-token"]
+    if(!token){
+        return res.status(401).send({
+            message: "Unauthorized"
+        })
+    }
+    jwt.verify(token,authConfig.secret,async (err,decoded)=>{
+        if(err){
+            return res.status(401).send({
+                message:"Unauthorized"
+            })
+        }
+        const user=await userModel.findOne({userID:decoded.id})
+        if(!user){
+            return res.status(400).send({
+                message:"User doesn't exist with this token"
+            })
+        }
+        req.user=user
+        next()
+    })
+    
+}
+
+const isAdmin=async(req,res,next)=>{
+    const user=req.user
+    if(user && user.userType=='ADMIN'){
+        next()
+    }
+    else{
+        return res.status(401).send({
+            message: "Unauthorized for Customers"
+        })
+    }
+}
 module.exports={
     verifySignUpBody: verifySignUpBody,
-    verifySignInBody: verifySignInBody
+    verifySignInBody: verifySignInBody,
+    verifyToken: verifyToken,
+    isAdmin: isAdmin
 }
