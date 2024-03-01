@@ -16,8 +16,7 @@ exports.addCategory=async (req,res)=>{
         })
 
         return res.status(201).send({
-            name: categoryCreated.name,
-            description: categoryCreated.description
+            categoryCreated
         })
 
     }catch(err){
