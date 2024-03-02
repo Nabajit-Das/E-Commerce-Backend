@@ -71,18 +71,18 @@ const verifyToken=async(req,res,next)=>{
     const token=req.headers["x-acess-token"]
     if(!token){
         return res.status(401).send({
-            message: "Unauthorized"
+            message: "Unauthorized. Should LogIn for access"
         })
     }
     jwt.verify(token,authConfig.secret,async (err,decoded)=>{
         if(err){
             return res.status(401).send({
-                message:"Unauthorized"
+                message:"Unauthorized. Error in token reading"
             })
         }
         const user=await userModel.findOne({userID:decoded.id})
         if(!user){
-            return res.status(400).send({
+            return res.status(401).send({
                 message:"User doesn't exist with this token"
             })
         }
