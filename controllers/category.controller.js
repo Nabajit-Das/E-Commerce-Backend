@@ -50,7 +50,7 @@ exports.findCategory=async (req,res)=>{
 
     }catch(err){
         res.status(500).send({
-            message: "Unable to connect with Database"
+            message: "Error in Finding category"
         })
     }
 }
@@ -74,7 +74,29 @@ exports.editCategory=async (req,res)=>{
 
     }catch(err){
         res.status(500).send({
-            message: "Unable to connect with Database"
+            message: "Error in Updating category"
+        })
+    }
+}
+
+exports.deleteCategory=async (req,res)=>{
+    try{
+        const category=await categoryModel.findOne({name:req.body.name})
+        if(!category){
+            return res.status(404).send({
+                message : "No such Category Found"
+            })
+        }
+        else{
+            await categoryModel.deleteOne({name:req.body.name})
+            res.status(200).send({
+                message: req.body.name+" Category Deleted Successfully"
+            })
+        }
+
+    }catch(err){
+        res.status(500).send({
+            message: "Error in Deleting category"
         })
     }
 }

@@ -2,6 +2,7 @@
  * POST localhost:8080/ecomm/api/v1/category/add
  * GET localhost:8080/ecomm/api/v1/category/find
  * PUT localhost:8080/ecomm/api/v1/category/edit
+ * DELETE localhost:8080/ecomm/api/v1/category/delete
  */
 
 const categoryController=require("../controllers/category.controller")
@@ -14,4 +15,6 @@ module.exports=(app)=>{
     app.get("/ecomm/api/v1/category/find",[categoryMiddlewares.verifyName],categoryController.findCategory),
 
     app.put("/ecomm/api/v1/category/edit",[categoryMiddlewares.editDetails,authmw.verifyToken,authmw.isAdmin],categoryController.editCategory)
+
+    app.delete("/ecomm/api/v1/category/delete",[categoryMiddlewares.verifyName,authmw.verifyToken,authmw.isAdmin],categoryController.deleteCategory)
 }
