@@ -2,7 +2,7 @@
  * Model for products
  */
 const mongoose=require("mongoose")
-const category=require("./category.model")
+// const category=require("./category.model")
 const productModel=new mongoose.Schema({
     name:{
         type:String,
@@ -12,7 +12,13 @@ const productModel=new mongoose.Schema({
     quantity:{
         type:Number,
         required:true,
+    },
+    category:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Category',
+        required:true
     }
+    
 },{timestamps:true,versionKey:false})
 
 module.exports=mongoose.model("Product",productModel)

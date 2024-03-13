@@ -9,7 +9,8 @@ exports.addProduct=async(req,res)=>{
     try{
         const newProduct=await productModel.create({
             name: req.body.name,
-            quantity:req.body.quantity
+            quantity:req.body.quantity,
+            category:req.body.categoryId
         })
         res.status(201).send({
             newProduct
@@ -19,6 +20,7 @@ exports.addProduct=async(req,res)=>{
         res.status(500).send({
             message: "Error in adding product"
         })
+        console.log(err)
     }
 }
 

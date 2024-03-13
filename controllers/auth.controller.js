@@ -68,7 +68,7 @@ exports.signIn= async (req,res)=>{
 
     // 3. Return JWT on successful authentication
     const token=jwt.sign({id:user.userID},secret.secret,{
-        expiresIn: 120
+        expiresIn: 600 //seconds
     })
 
     res.status(200).send({

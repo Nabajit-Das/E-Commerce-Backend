@@ -100,3 +100,24 @@ exports.deleteCategory=async (req,res)=>{
         })
     }
 }
+
+exports.getProducts=async (req,res)=>{
+    try{
+        const productsinCategory=await categoryModel.find({name:req.body.name}).populate('products');
+        if(!productsinCategory){
+            res.status(404).send({
+                message:"No products found"
+            })
+        }
+        else{
+            res.status(200).send({
+                productsinCategory
+            })
+        }
+
+    }catch(err){
+        res.status(500).send({
+            message:"Error in finding products in category"
+        })
+    }
+}

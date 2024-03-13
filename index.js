@@ -9,6 +9,7 @@ const dbConfig=require("./configs/db.config")
 const userModel=require("./models/user.model")
 const bcrypt=require("bcryptjs")
 
+
 app.use(express.json()) //converts json object in request body in js object
 
 /**
@@ -55,6 +56,7 @@ async function init(){
     
 
 }
+
 
 /**
  * stitching the routes
