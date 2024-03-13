@@ -32,20 +32,18 @@ exports.addCategory=async (req,res)=>{
 exports.findCategory=async (req,res)=>{
     
     try{
-        const category=await categoryModel.findOne({name:req.body.name})
+        const regExPattern=`^${req.body.name}`
+    const category=await categoryModel.find({name:{$regex:regExPattern, $options:"i"}})
 
-        if(!category){
+        if(!category || category.length==0){
             res.status(404).send({
                 message: "No such Category found"
             })
         }
         else{
-            const categoryFound={
-                name: category.name,
-                description: category.description 
-            }
+            
             res.status(200).send({
-                categoryFound
+                category
             })
         }
 

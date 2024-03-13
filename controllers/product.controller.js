@@ -35,23 +35,16 @@ exports.addProduct=async(req,res)=>{
 
 exports.findProduct=async (req,res)=>{
     try{
-        const foundProduct=await productModel.findOne({name:req.body.name})
-        if(!foundProduct){
+        const regExPattern=`^${req.body.name}`
+        const foundProduct=await productModel.find({name:{$regex:regExPattern,$options:"i"}})
+        if(!foundProduct || foundProduct.length==0){
             res.status(404).send({
                 message: "No such product found"
             })
         }
-        if(foundProduct.quantity==0){
-            res.status(200).send({
-                name:foundProduct.name,
-                availableQuantity:"Sold Out"
-            })
-        }
         else{
-
             res.status(200).send({
-                name:foundProduct.name,
-                availableQuantity:foundProduct.quantity
+                foundProduct
             })
         }
 
