@@ -4,14 +4,23 @@
 
 const mongoose=require("mongoose")
 const productModel=require("../models/products.model")
+const categoryModel=require("../models/category.model")
 
 exports.addProduct=async(req,res)=>{
     try{
+        const category=await categoryModel.findOne({name:req.body.category})
+        if(!category){
+            res.status(404).send({
+                message: "No such category found"
+            })
+        } 
         const newProduct=await productModel.create({
             name: req.body.name,
             quantity:req.body.quantity,
-            category:req.body.categoryId
+            category:category.id
         })
+        category.products.push(newProduct)
+        await category.save()
         res.status(201).send({
             newProduct
         })

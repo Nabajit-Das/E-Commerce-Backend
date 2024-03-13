@@ -12,7 +12,8 @@ exports.addCategory=async (req,res)=>{
     try{
         const categoryCreated=await categoryModel.create({
             name: req.body.name,
-            description: req.body.description
+            description: req.body.description,
+            products:[]
         })
 
         return res.status(201).send({
@@ -103,7 +104,7 @@ exports.deleteCategory=async (req,res)=>{
 
 exports.getProducts=async (req,res)=>{
     try{
-        const productsinCategory=await categoryModel.find({name:req.body.name}).populate('products');
+        const productsinCategory=await categoryModel.findOne({name:req.body.name}).populate('products');
         if(!productsinCategory){
             res.status(404).send({
                 message:"No products found"

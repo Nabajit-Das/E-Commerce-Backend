@@ -15,7 +15,7 @@ module.exports=(app)=>{
 
     app.get("/ecomm/api/v1/category/find",[categoryMiddlewares.verifyName],categoryController.findCategory),
 
-    app.get("/ecomm/api/v1/category/products",[categoryMiddlewares.verifyName],categoryController.getProducts)
+    app.get("/ecomm/api/v1/category/products",[],categoryController.getProducts)
 
     app.put("/ecomm/api/v1/category/edit",[categoryMiddlewares.editDetails,authmw.verifyToken,authmw.isAdmin],categoryController.editCategory)
 
