@@ -30,7 +30,8 @@ const userSchema=new mongoose.Schema({
         required:true,
         default:"CUSTOMER",
         enum:["CUSTOMER","ADMIN"]
-    }
+    },
+    cart:[{type:mongoose.Schema.Types.ObjectId,ref:"Cart"}]
 },{timestamps:true,versionKey:false})
 
 module.exports=mongoose.model("User",userSchema)
