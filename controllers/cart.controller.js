@@ -24,15 +24,17 @@ exports.addToCart = async (req, res) => {
         const cart = await cartModel.create({
           user: user._id,
           product: product._id,
-          cost: product.cost * req.body.quantity,
+
         });
+        user.cart.push(cart);
+        await user.save();
         res.status(200).send({
           message: "Added to cart successfully",
-          cart: cart,
         });
       }
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send({
       message: "Error in adding to cart",
     });
