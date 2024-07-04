@@ -76,6 +76,7 @@ exports.signIn= async (req,res)=>{
         userID: user.userID,
         Email:user.Email,
         userType: user.userType,
-        token: token
+        token: token,
+        _id: user._id
     })
 }

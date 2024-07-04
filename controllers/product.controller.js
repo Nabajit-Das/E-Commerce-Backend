@@ -17,7 +17,11 @@ exports.addProduct=async(req,res)=>{
         const newProduct=await productModel.create({
             name: req.body.name,
             quantity:req.body.quantity,
-            category:category.id
+            category:category.id,
+            retailPrice:req.body.retailPrice,
+            discountedPrice:req.body.discountedPrice,
+            specifications:req.body.specifications,
+            image:req.body.image
         })
         category.products.push(newProduct)
         await category.save()
@@ -55,6 +59,7 @@ exports.findProduct=async (req,res)=>{
     }
 }
 
+
 exports.deleteProduct=async(req,res)=>{
     try{
         const foundProduct=await productModel.findOne({name:req.body.name})
@@ -85,7 +90,7 @@ exports.editProduct=async (req,res)=>{
             })
         }
         else{
-           await productModel.updateOne({name:req.body.oldname},{name:req.body.newname,quantity:req.body.quantity})
+           await productModel.updateOne({name:req.body.oldname},{name:req.body.newname,quantity:req.body.quantity,retailPrice:req.body.retailPrice,discountedPrice:req.body.discountedPrice,specifications:req.body.specifications,image:req.body.image})
            const updatedProduct=await productModel.find({name:req.body.newname})
            res.status(201).send({
                 updatedProduct

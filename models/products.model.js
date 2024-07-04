@@ -17,7 +17,19 @@ const productModel=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Category',
         required:true
-    }
+    },
+    retailPrice:{
+        type:Number,
+        required:true
+    },
+    discountedPrice:{
+        type:Number,
+        required:true
+    },
+    specifications:{
+        type:String,
+        required:true
+    },
     
 },{timestamps:true,versionKey:false})
 
